@@ -1,0 +1,41 @@
+NAME = philo
+
+SRC = philo.c		\
+	ft_simulation.c	\
+	ft_monitor.c	\
+	ft_time.c		\
+	ft_utils.c		\
+	ft_philo_lock.c	\
+	ft_sleep.c	\
+	
+OBJ_DIR = ./obj
+OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
+
+CC = gcc
+CFLAGS = -Wall -Werror -Wextra 
+
+
+#CFLAGS += -fsanitize=thread -g
+#CFLAGS	+=	-fsanitize=address -fno-omit-frame-pointer -g
+CFLAGS	+= -o3
+
+RM = rm -rf
+
+all: $(NAME)
+
+$(NAME): $(OBJ_DIR) $(OBJ)
+	$(CC) $(OBJ) $(CFLAGS) -o $(NAME) -pthread
+
+clean:
+	$(RM) $(OBJ_DIR)
+
+fclean: clean
+	$(RM) $(NAME)
+
+re: fclean all
+
+$(OBJ_DIR):
+	mkdir -p ./obj
+
+$(OBJ_DIR)/%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
